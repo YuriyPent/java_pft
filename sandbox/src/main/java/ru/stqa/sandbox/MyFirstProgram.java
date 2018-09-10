@@ -2,14 +2,13 @@ package ru.stqa.sandbox;
 
 public class MyFirstProgram {
   public static void main(String[] args) {
-    hello("world");
-    Square s = new Square(5);
-    Rectangle r = new Rectangle(4,6);
-    System.out.println("Площадь квадрата со стороной " + s.l + " = " + s.area());
-    System.out.println("Площадь прямоугольника со сторонами " + r.a + " и " + r.b + " = " + r.area());
-  }
-  public static void hello (String somebody) {
-    System.out.println("Hello," + somebody +"!");
+
+    Point first = new Point(20, 30);
+    Point second = new Point(10, 30);
+
+    System.out.println("Расстояние между двумя точками = " + first.distance(second));
   }
 
-  }
+}
+
+
