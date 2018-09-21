@@ -1,15 +1,20 @@
-package ru.stqa.pft.addressbook.tests;
+package ru.stqa.pft.addressbook;
 
-import java.util.concurrent.TimeUnit;
-import org.testng.annotations.*;
-import static org.testng.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
-public class NewContactCreate {
-  private WebDriver wd;
-  private String baseUrl;
+import java.util.concurrent.TimeUnit;
+
+import static org.testng.Assert.fail;
+
+/**
+ * Created by yurap on 19.09.2018.
+ */
+public class TestBase {
+  protected WebDriver wd;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
 
@@ -23,32 +28,47 @@ public class NewContactCreate {
 
   private void login(String username, String password) {
     wd.findElement(By.name("user")).click();
-    wd.findElement(By.name("pass")).click();
-    wd.findElement(By.name("pass")).click();
-    wd.findElement(By.xpath("//input[@value='Login']")).click();
-    wd.findElement(By.name("user")).click();
-    wd.findElement(By.name("pass")).clear();
-    wd.findElement(By.name("pass")).sendKeys(password);
     wd.findElement(By.name("user")).clear();
     wd.findElement(By.name("user")).sendKeys(username);
     wd.findElement(By.name("pass")).click();
-    wd.findElement(By.name("pass")).click();
-    wd.findElement(By.name("pass")).click();
-    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::input[2]")).click();
+    wd.findElement(By.name("pass")).clear();
+    wd.findElement(By.name("pass")).sendKeys(password);
+    wd.findElement(By.xpath("//input[@value='Login']")).click();
   }
 
-  @Test
-  public void testNewContactCreate() throws Exception {
-    initNewContactCreatePage();
-    fillNewContact(new NewContactData("First name", "Middle name", "Last name", "Nickname", "Title", "Company", "Address", "Home", "Mobile", "Work", "Fax", "one@one.fox"));
-    submitNewContactCreation();
+  protected void returnToGroupPage() {
+    wd.findElement(By.linkText("group page")).click();
   }
 
-  private void submitNewContactCreation() {
+  protected void submitGroupCreation() {
+    wd.findElement(By.name("submit")).click();
+  }
+
+  protected void fillGroupForm(GroupData groupData) {
+    wd.findElement(By.name("group_name")).click();
+    wd.findElement(By.name("group_name")).clear();
+    wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
+    wd.findElement(By.name("group_header")).click();
+    wd.findElement(By.name("group_header")).clear();
+    wd.findElement(By.name("group_header")).sendKeys(groupData.getHeader());
+    wd.findElement(By.name("group_footer")).click();
+    wd.findElement(By.name("group_footer")).clear();
+    wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
+  }
+
+  protected void initGroupCreation() {
+    wd.findElement(By.name("new")).click();
+  }
+
+  protected void gotoGroupPage() {
+    wd.findElement(By.linkText("groups")).click();
+  }
+
+  protected void submitNewContactCreation() {
     wd.findElement(By.xpath("(//input[@name='submit'])[2]")).click();
   }
 
-  private void fillNewContact(NewContactData newContactData) {
+  protected void fillNewContact(NewContactData newContactData) {
     wd.findElement(By.name("firstname")).click();
     wd.findElement(By.name("firstname")).clear();
     wd.findElement(By.name("firstname")).sendKeys(newContactData.getFirstname());
@@ -87,19 +107,18 @@ public class NewContactCreate {
     wd.findElement(By.name("email")).sendKeys(newContactData.getEmail());
     wd.findElement(By.name("bday")).click();
     new Select(wd.findElement(By.name("bday"))).selectByVisibleText("10");
-    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Group:'])[1]/preceding::option[81]")).click();
+    wd.findElement(By.xpath("//option[@value='10']")).click();
     wd.findElement(By.name("bmonth")).click();
     new Select(wd.findElement(By.name("bmonth"))).selectByVisibleText("February");
-    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Group:'])[1]/preceding::option[57]")).click();
+    wd.findElement(By.xpath("//option[@value='February']")).click();
     wd.findElement(By.name("byear")).click();
     wd.findElement(By.name("byear")).clear();
     wd.findElement(By.name("byear")).sendKeys("2010");
     wd.findElement(By.name("new_group")).click();
     new Select(wd.findElement(By.name("new_group"))).selectByVisibleText("test1");
-    wd.findElement(By.xpath("(//option[@value='1'])[3]")).click();
   }
 
-  private void initNewContactCreatePage() {
+  protected void initNewContactCreatePage() {
     wd.findElement(By.linkText("add new")).click();
   }
 
@@ -112,6 +131,7 @@ public class NewContactCreate {
     }
   }
 
+
   private boolean isElementPresent(By by) {
     try {
       wd.findElement(by);
@@ -121,6 +141,7 @@ public class NewContactCreate {
     }
   }
 
+
   private boolean isAlertPresent() {
     try {
       wd.switchTo().alert();
@@ -129,6 +150,7 @@ public class NewContactCreate {
       return false;
     }
   }
+
 
   private String closeAlertAndGetItsText() {
     try {
@@ -144,4 +166,17 @@ public class NewContactCreate {
       acceptNextAlert = true;
     }
   }
+
+  protected void deleteSelectedGroups() {
+    wd.findElement(By.name("delete")).click();
+  }
+
+  protected void selectGroup() {
+    wd.findElement(By.name("selected[]")).click();
+  }
+
+  protected void logout() {
+      wd.findElement(By.linkText("Logout")).click();
+  }
+
 }
