@@ -10,7 +10,7 @@ public class NewContactCreate extends TestBase{
     app.getNewContactHelper().initNewContactCreatePage();
     app.getNewContactHelper().fillNewContact(new NewContactData("First name", "Middle name", "Last name", "Nickname", "Title", "Company", "Address", "Home", "Mobile", "Work", "Fax", "one@one.fox"));
     app.getNewContactHelper().submitNewContactCreation();
-    app.logout();
+    //app.logout();
   }
 
 }
