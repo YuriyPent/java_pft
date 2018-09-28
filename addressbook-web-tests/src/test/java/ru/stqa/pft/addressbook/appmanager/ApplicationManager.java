@@ -3,15 +3,20 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 import java.util.concurrent.TimeUnit;
+import static org.openqa.selenium.remote.BrowserType.*;
 
 /**
  * Created by yurap on 21.09.2018.
  */
 public class ApplicationManager {
-  FirefoxDriver wd;
+  WebDriver wd;
 
   private NewContactHelper newContactHelper;
   private NavigationHelper navigationHelper;
@@ -20,9 +25,21 @@ public class ApplicationManager {
 
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
+  private String browser;
 
+  public ApplicationManager(String browser) {
+    this.browser = browser;
+  }
   public void init() {
-    wd = new FirefoxDriver();
+
+    if (browser == FIREFOX){
+      wd = new FirefoxDriver();
+    }else if (browser == CHROME){
+      wd = new ChromeDriver();
+    }else if (browser == BrowserType.IE){
+      wd = new InternetExplorerDriver();
+    }
+    //wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     wd.get("http://localhost:8080/addressbook/");
     groupHelper = new GroupHelper(wd);
