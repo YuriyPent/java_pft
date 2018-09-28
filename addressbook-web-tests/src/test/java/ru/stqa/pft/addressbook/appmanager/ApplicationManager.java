@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import static org.openqa.selenium.remote.BrowserType.*;
 
@@ -32,11 +33,11 @@ public class ApplicationManager {
   }
   public void init() {
 
-    if (browser == FIREFOX){
+    if (browser.equals(BrowserType.FIREFOX)){
       wd = new FirefoxDriver();
-    }else if (browser == CHROME){
+    }else if (browser.equals(BrowserType.CHROME)){
       wd = new ChromeDriver();
-    }else if (browser == BrowserType.IE){
+    }else if (browser.equals(BrowserType.IE)){
       wd = new InternetExplorerDriver();
     }
     //wd = new FirefoxDriver();
