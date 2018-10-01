@@ -1,17 +1,10 @@
 package ru.stqa.pft.addressbook.appmanager;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import static org.openqa.selenium.remote.BrowserType.*;
 
 /**
  * Created by yurap on 21.09.2018.
@@ -41,7 +34,7 @@ public class ApplicationManager {
       wd = new InternetExplorerDriver();
     }
     //wd = new FirefoxDriver();
-    wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    //wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     wd.get("http://localhost:8080/addressbook/");
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
@@ -54,17 +47,9 @@ public class ApplicationManager {
     wd.quit();
   }
 
-  private boolean isElementPresent(By by) {
-    try {
-      wd.findElement(by);
-      return true;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
-  }
 
 
-
+/*
   private String closeAlertAndGetItsText() {
     try {
       Alert alert = wd.switchTo().alert();
@@ -79,7 +64,7 @@ public class ApplicationManager {
       acceptNextAlert = true;
     }
   }
-
+*/
   public GroupHelper getGroupHelper() {
     return groupHelper;
   }
