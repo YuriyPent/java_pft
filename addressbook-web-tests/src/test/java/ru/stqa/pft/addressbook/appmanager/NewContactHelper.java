@@ -2,25 +2,33 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.NewContactData;
 
 /**
  * Created by yurap on 24.09.2018.
  */
-public class NewContactHelper {
-  private WebDriver wd;
+public class NewContactHelper extends HelperBase {
 
-  public NewContactHelper(WebDriver wd) {
-    this.wd = wd;
-  }
+  public NewContactHelper(WebDriver wd) {super(wd);}
 
   public void submitNewContactCreation() {
-    wd.findElement(By.xpath("(//input[@name='submit'])[2]")).click();
+    click(By.name("submit"));
   }
-
-  public void fillNewContact(NewContactData newContactData) {
+  public void initNewContactCreatePage() {
+    click(By.linkText("add new"));
+  }
+  public void returnToHomePage(){
+    click(By.linkText("home page"));
+  }
+  public void initContactModification(){
+    click(By.cssSelector("img[alt='Edit']"));
+  }
+  public void submitContactModification(){
+    click(By.name("update"));
+  }
+  public void fillNewContact(NewContactData newContactData,boolean creation) {
     wd.findElement(By.name("firstname")).click();
     wd.findElement(By.name("firstname")).clear();
     wd.findElement(By.name("firstname")).sendKeys(newContactData.getFirstname());
@@ -67,10 +75,12 @@ public class NewContactHelper {
     wd.findElement(By.name("byear")).clear();
     wd.findElement(By.name("byear")).sendKeys("2010");
     wd.findElement(By.name("new_group")).click();
-    new Select(wd.findElement(By.name("new_group"))).selectByVisibleText("test1");
-  }
 
-  public void initNewContactCreatePage() {
-    wd.findElement(By.linkText("add new")).click();
+
+    if(creation){
+      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(NewContactData.getGroup());
+    } else {
+      Assert.assertFalse(isElementPresent(By.name("new_group")));
+    }
   }
 }
