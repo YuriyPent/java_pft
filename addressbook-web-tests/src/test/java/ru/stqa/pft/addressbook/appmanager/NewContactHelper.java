@@ -74,7 +74,7 @@ public class NewContactHelper extends HelperBase {
     wd.findElement(By.name("byear")).click();
     wd.findElement(By.name("byear")).clear();
     wd.findElement(By.name("byear")).sendKeys("2010");
-    wd.findElement(By.name("new_group")).click();
+    //wd.findElement(By.name("new_group")).click();
 
 
     if(creation){
@@ -83,4 +83,23 @@ public class NewContactHelper extends HelperBase {
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
   }
+
+  public void gotoHomePage() {
+    click(By.linkText("home"));
+  }
+
+  public boolean isThereAContact() {
+    return isElementPresent(By.name("selected[]"));
+  }
+
+  public void initDeleteContact() {
+    wd.findElement(By.name("Delete")).click();
+  }
+
+ /*ublic void createContact(NewContactData contact){
+    initContactModification();
+    fillNewContact(contact);
+    submitContactModification();
+    returnToHomePage();
+  }*/
 }

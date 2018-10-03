@@ -6,6 +6,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by yurap on 21.09.2018.
  */
@@ -24,17 +26,18 @@ public class ApplicationManager {
   public ApplicationManager(String browser) {
     this.browser = browser;
   }
+
   public void init() {
 
-    if (browser.equals(BrowserType.FIREFOX)){
+    if (browser.equals(BrowserType.FIREFOX)) {
       wd = new FirefoxDriver();
-    }else if (browser.equals(BrowserType.CHROME)){
+    } else if (browser.equals(BrowserType.CHROME)) {
       wd = new ChromeDriver();
-    }else if (browser.equals(BrowserType.IE)){
+    } else if (browser.equals(BrowserType.IE)) {
       wd = new InternetExplorerDriver();
     }
-    //wd = new FirefoxDriver();
-    //wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    
+    wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     wd.get("http://localhost:8080/addressbook/");
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
@@ -48,23 +51,22 @@ public class ApplicationManager {
   }
 
 
-
-/*
-  private String closeAlertAndGetItsText() {
-    try {
-      Alert alert = wd.switchTo().alert();
-      String alertText = alert.getText();
-      if (acceptNextAlert) {
-        alert.accept();
-      } else {
-        alert.dismiss();
+  /*
+    private String closeAlertAndGetItsText() {
+      try {
+        Alert alert = wd.switchTo().alert();
+        String alertText = alert.getText();
+        if (acceptNextAlert) {
+          alert.accept();
+        } else {
+          alert.dismiss();
+        }
+        return alertText;
+      } finally {
+        acceptNextAlert = true;
       }
-      return alertText;
-    } finally {
-      acceptNextAlert = true;
     }
-  }
-*/
+  */
   public GroupHelper getGroupHelper() {
     return groupHelper;
   }

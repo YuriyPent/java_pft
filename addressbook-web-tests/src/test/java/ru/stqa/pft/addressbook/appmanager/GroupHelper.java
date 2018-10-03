@@ -60,4 +60,11 @@ public class GroupHelper extends HelperBase{
     return isElementPresent(By.name("selected[]"));
 
   }
+
+  public void deleteGroup() {
+  }
+
+  public int getGroupCount() {
+    return wd.findElements(By.name("selected[]")).size();
+  }
 }
