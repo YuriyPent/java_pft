@@ -17,7 +17,7 @@ public class ContactModificationTests extends TestBase {
             "Title", "Company", "Address", "Home",
             "Mobile", "Work", "Fax", "one@one.fox", null), false);
     app.getNewContactHelper().submitContactModification();
-    app.getNavigationHelper().returnToHomePage();
+    app.goTo().returnToHomePage();
 
   }
 }
