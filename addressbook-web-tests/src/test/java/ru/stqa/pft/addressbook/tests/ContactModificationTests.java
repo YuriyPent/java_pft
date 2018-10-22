@@ -12,7 +12,7 @@ public class ContactModificationTests extends TestBase {
       app.getNewContactHelper().createContact(new NewContactData());
     }*/
     app.getNewContactHelper().initContactModification();
-    app.getNewContactHelper().fillNewContact(new NewContactData("First name",
+    app.getNewContactHelper().fillContactForm(new NewContactData("First name",
             "Middle name", "Last name", "Nickname",
             "Title", "Company", "Address", "Home",
             "Mobile", "Work", "Fax", "one@one.fox", null), false);
