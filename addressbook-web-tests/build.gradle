@@ -7,4 +7,20 @@ repositories {
 dependencies {
 	compile 'org.testng:testng:6.9.10'
 	compile 'org.seleniumhq.selenium:selenium-java:3.14.0'
+	compile 'org.hamcrest:java-hamcrest:2.0.0.0'
+	compile 'com.beust:jcommander:1.72'
+	compile 'com.thoughtworks.xstream:xstream:1.4.8'
+	compile 'com.google.code.gson:gson:2.8.5'
+}
+
+task testGroups (type : Test){
+	useTestNG {
+		suites 'src/test/resources/testng-groups.xml'
+	}
+}
+
+task testContacts (type : Test){
+	useTestNG {
+		suites 'src/test/resources/testng-contacts.xml'
+	}
 }
