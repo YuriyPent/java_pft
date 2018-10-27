@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("group")
 public class GroupData {
   @XStreamOmitField
-  private int id = Integer.MAX_VALUE;
+  private int id;
   @Expose
   private String name;
   @Expose
@@ -43,6 +43,7 @@ public class GroupData {
     this.name = name;
     return this;
   }
+
 
   @Override
   public boolean equals(Object o) {
@@ -81,3 +82,4 @@ public class GroupData {
   }
 
 }
+

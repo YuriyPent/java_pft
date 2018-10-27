@@ -1,8 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 
 import java.io.File;
 
@@ -11,6 +9,7 @@ import java.io.File;
  */
 public class HelperBase {
   protected WebDriver wd;
+  private boolean acceptNextAlert = true;
 
   public HelperBase(WebDriver wd) {
     this.wd = wd;
@@ -44,6 +43,20 @@ public class HelperBase {
       return true;
     } catch (NoSuchElementException ex) {
       return false;
+    }
+  }
+  public String closeAlertAndGetItsText() {
+    try {
+      Alert alert = wd.switchTo().alert();
+      String alertText = alert.getText();
+      if (acceptNextAlert) {
+        alert.accept();
+      } else {
+        alert.dismiss();
+      }
+      return alertText;
+    } finally {
+      acceptNextAlert = true;
     }
   }
 }
