@@ -28,7 +28,7 @@ public class ApplicationManager {
   public ApplicationManager(String browser) {
     this.browser = browser;
     properties = new Properties();
-}
+  }
 
   public void init() throws IOException {
     String target = System.getProperty("target", "local");
@@ -40,7 +40,7 @@ public class ApplicationManager {
     } else if (browser.equals(BrowserType.IE)) {
       wd = new InternetExplorerDriver();
     }
-    
+
     wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     wd.get(properties.getProperty("web.baseUrl"));
     groupHelper = new GroupHelper(wd);
@@ -54,23 +54,6 @@ public class ApplicationManager {
     wd.quit();
   }
 
-
-  /*
-    private String closeAlertAndGetItsText() {
-      try {
-        Alert alert = wd.switchTo().alert();
-        String alertText = alert.getText();
-        if (acceptNextAlert) {
-          alert.accept();
-        } else {
-          alert.dismiss();
-        }
-        return alertText;
-      } finally {
-        acceptNextAlert = true;
-      }
-    }
-  */
   public GroupHelper group() {
     return groupHelper;
   }
@@ -86,5 +69,4 @@ public class ApplicationManager {
   public ContactHelper contact() {
     return contactHelper;
   }
-
 }

@@ -1,0 +1,62 @@
+<list>
+  <contact>
+    <firstname>firstname 0</firstname>
+    <lastname>lastname 0</lastname>
+    <address>address 0</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 1</firstname>
+    <lastname>lastname 1</lastname>
+    <address>address 1</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 2</firstname>
+    <lastname>lastname 2</lastname>
+    <address>address 2</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 3</firstname>
+    <lastname>lastname 3</lastname>
+    <address>address 3</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 4</firstname>
+    <lastname>lastname 4</lastname>
+    <address>address 4</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 5</firstname>
+    <lastname>lastname 5</lastname>
+    <address>address 5</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 6</firstname>
+    <lastname>lastname 6</lastname>
+    <address>address 6</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 7</firstname>
+    <lastname>lastname 7</lastname>
+    <address>address 7</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 8</firstname>
+    <lastname>lastname 8</lastname>
+    <address>address 8</address>
+    <groups/>
+  </contact>
+  <contact>
+    <firstname>firstname 9</firstname>
+    <lastname>lastname 9</lastname>
+    <address>address 9</address>
+    <groups/>
+  </contact>
+</list>

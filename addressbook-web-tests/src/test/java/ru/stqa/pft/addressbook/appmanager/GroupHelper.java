@@ -8,7 +8,7 @@ import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.List;
 
-public class GroupHelper extends HelperBase{
+public class GroupHelper extends HelperBase {
 
 
   public GroupHelper(WebDriver wd) {
@@ -38,7 +38,7 @@ public class GroupHelper extends HelperBase{
   }
 
   public void selectGroupById(int id) {
-    wd.findElement(By.cssSelector("input[value='" + id +"']")).click();
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
   }
 
   public void initGroupModification() {
@@ -57,6 +57,7 @@ public class GroupHelper extends HelperBase{
     returnToGroupPage();
 
   }
+
   public void modify(GroupData group) {
     selectGroupById(group.getId());
     initGroupModification();
@@ -79,6 +80,7 @@ public class GroupHelper extends HelperBase{
     return isElementPresent(By.name("selected[]"));
 
   }
+
   public int count() {
     return wd.findElements(By.name("selected[]")).size();
   }
@@ -86,12 +88,12 @@ public class GroupHelper extends HelperBase{
   private Groups groupCache = null;
 
   public Groups all() {
-    if(groupCache != null){
+    if (groupCache != null) {
       return new Groups(groupCache);
     }
     groupCache = new Groups();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
-    for(WebElement element : elements) {
+    for (WebElement element : elements) {
       String name = element.getText();
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       groupCache.add(new GroupData().withId(id).withName(name));

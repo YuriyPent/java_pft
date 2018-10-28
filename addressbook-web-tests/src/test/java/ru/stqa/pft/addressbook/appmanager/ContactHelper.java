@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
-import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,9 @@ import static org.testng.Assert.assertTrue;
 
 public class ContactHelper extends HelperBase {
 
-  public ContactHelper(WebDriver wd) {super(wd);}
+  public ContactHelper(WebDriver wd) {
+    super(wd);
+  }
 
   public void initContactCreation() {
     click(By.linkText("add new"));
@@ -34,20 +36,8 @@ public class ContactHelper extends HelperBase {
     click(By.name("submit"));
   }
 
-  public void initContactModification(){
-    click(By.cssSelector("img[alt='Edit']"));
-  }
-
-  public void submitContactModification(){
+  public void submitContactModification() {
     click(By.name("update"));
-  }
-
-  public boolean isThereAContact() {
-    return isElementPresent(By.name("selected[]"));
-  }
-
-  public void initDeleteContact() {
-    wd.findElement(By.name("Delete")).click();
   }
 
 
@@ -64,10 +54,10 @@ public class ContactHelper extends HelperBase {
     type(By.name("work"), contactData.getWorkPhone());
     type(By.name("fax"), contactData.getFax());
     type(By.name("email"), contactData.getEmail());
-   // attach(By.name("photo"), contactData.getPhoto());
+    // attach(By.name("photo"), contactData.getPhoto());
 
     if (creation) {
-      if(contactData.getGroups().size() > 0) {
+      if (contactData.getGroups().size() > 0) {
         Assert.assertTrue(contactData.getGroups().size() == 1);
         new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
       }
@@ -87,19 +77,17 @@ public class ContactHelper extends HelperBase {
   public void deleteContact() {
     click(By.xpath("//input[@value='Delete']"));
     assertTrue(closeAlertAndGetItsText().matches("^Delete 1 addresses[\\s\\S]$"));
-    click(By.linkText("home")); //пауза
+    click(By.linkText("home"));
   }
 
 
   public void editContact(int index) {
     wd.findElements(By.xpath("//img[@alt='Edit']")).get(index).click();
-//    click(By.xpath("//img[@alt='Edit']"));
   }
 
   public void editContactById(int id) {
     wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
   }
-
 
   public void create(ContactData contactData) {
     initContactCreation();
@@ -124,9 +112,6 @@ public class ContactHelper extends HelperBase {
     selectContactById(contact.getId());
     deleteContact();
   }
-
-
-
 
   public int getContactCount() {
     return wd.findElements(By.name("selected[]")).size(); //метод возвращает количество элементов в списке
@@ -204,7 +189,7 @@ public class ContactHelper extends HelperBase {
     new Select(wd.findElement(By.name(element))).selectByVisibleText(group);
   }
 
-  public void removeFromGroup (ContactData contact, GroupData group) {
+  public void removeFromGroup(ContactData contact, GroupData group) {
     selectGroupFromList("[all]", "group");
     selectGroupFromList(group.getName(), "group");
     selectContactById(contact.getId());
