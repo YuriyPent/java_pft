@@ -64,17 +64,16 @@ public class ContactHelper extends HelperBase {
     type(By.name("work"), contactData.getWorkPhone());
     type(By.name("fax"), contactData.getFax());
     type(By.name("email"), contactData.getEmail());
-    attach(By.name("photo"), contactData.getPhoto());
+   // attach(By.name("photo"), contactData.getPhoto());
 
     if (creation) {
-      if (contactData.getGroup() != null) {
-        new Select(wd.findElement(By.name("new_group")))
-                .selectByVisibleText(contactData.getGroup());
+      if(contactData.getGroups().size() > 0) {
+        Assert.assertTrue(contactData.getGroups().size() == 1);
+        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
       }
     } else {
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
-
   }
 
   public void selectContact(int index) {
@@ -113,7 +112,7 @@ public class ContactHelper extends HelperBase {
     editContactById(contact.getId());
     fillContactForm(contact, false);
     submitContactModification();
-    returnToContactList();
+    returnToHomePage();
   }
 
   public void delete(int index) {
@@ -212,4 +211,7 @@ public class ContactHelper extends HelperBase {
     click(By.name("remove"));
   }
 
+  public int count() {
+    return wd.findElements(By.name("selected[]")).size();
+  }
 }

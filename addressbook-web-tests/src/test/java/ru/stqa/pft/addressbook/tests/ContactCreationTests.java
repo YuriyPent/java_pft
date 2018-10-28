@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -41,5 +40,4 @@ public class ContactCreationTests extends TestBase{
     app.getContactHelper().submitNewContactCreation();
     app.getContactHelper().returnToContactList();
   }
-
 }
