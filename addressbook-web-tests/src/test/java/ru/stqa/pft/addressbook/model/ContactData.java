@@ -1,42 +1,89 @@
 package ru.stqa.pft.addressbook.model;
 
-import com.google.gson.annotations.Expose;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
-  @Expose
-  private String firstname;
-  private  String middlename;
-  @Expose
-  private  String lastname;
-  private  String nickname;
-  private  String title;
-  private  String company;
-  @Expose
-  private  String address;
-  private  String homePhone;
-  private  String mobilePhone;
-  private  String workPhone;
-  private  String fax;
-  private  String email;
-  private  String allPhones;
-  @XStreamOmitField
-  private int id = Integer.MAX_VALUE;
-  private String allEmail;
-  private String email2;
-  private String email3;
 
-  private Set<GroupData> groups = new HashSet<GroupData>();
+  @Id
+  @Column(name = "Id")
+  private int id;
+
+  @Column(name = "firstname")
+  private String firstname;
+
+  @Column(name = "middlename")
+  private  String middlename;
+
+  @Column(name = "lastname")
+  private  String lastname;
+
+ transient private String group;
+
+  @Column(name = "nickname")
+  private  String nickname;
+
+  @Column(name = "title")
+  private  String title;
+
+  @Column(name = "company")
+  private  String company;
+
+  @Column(name = "address")
+  @Type(type = "text")
+  private  String address;
+
+  @Column(name = "home")
+  @Type(type = "text")
+  private  String homePhone;
+
+  @Column(name = "mobile")
+  @Type(type = "text")
+  private  String mobilePhone;
+
+  @Column(name = "work")
+  @Type(type = "text")
+  private  String workPhone;
+
+  @Column(name = "fax")
+  @Type(type = "text")
+  private  String fax;
+
+  @Column(name = "email")
+  @Type(type = "text")
+  private  String email;
+
+  transient private  String allPhones;
+
+  @Column(name = "photo")
+  @Type(type = "text")
+  private String photo;
 
   public File getPhoto() {
     return new File(photo);
   }
-  private String photo;
+  public ContactData withPhoto(File photo) {
+    this.photo = photo.getPath();
+    return this;
+  }
+
+  transient private String allEmail;
+  transient private String email2;
+  transient private String email3;
+
+  transient private Set<GroupData> groups = new HashSet<GroupData>();
+
+
 
   public String getAllPhones(){
     return allPhones;
@@ -47,6 +94,7 @@ public class ContactData {
     this.allPhones = allPhones;
     return this;
   }
+
 
   public ContactData withAllEmail(String allEmail) {
     this.allEmail = allEmail;
@@ -63,10 +111,7 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withPhoto(File photo) {
-    this.photo = photo.getPath();
-    return this;
-  }
+
 
   public String getFirstname() {
     return firstname;
@@ -206,19 +251,18 @@ public class ContactData {
     return Objects.hash(id, firstname, lastname, groups);
   }
 
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
+    return this;
+  }
+
   @Override
   public String toString() {
     return "ContactData{" +
             "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
-            ", groups=" + groups +
             '}';
-  }
-
-  public ContactData inGroup(GroupData group) {
-    groups.add(group);
-    return this;
   }
 
 }
