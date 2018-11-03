@@ -7,6 +7,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @XStreamAlias("group")
 @javax.persistence.Entity
@@ -15,7 +18,7 @@ public class GroupData {
   @XStreamOmitField
   @Id
   @Column(name = "group_id")
-  private int id;
+  private int id =Integer.MAX_VALUE;
   @Expose
   @Column(name = "group_name")
   private String name;
@@ -27,12 +30,21 @@ public class GroupData {
   @Column(name = "group_footer")
   @Type(type = "text")
   private String footer;
+  
+  public void setContacts(Set<ContactData> contacts) {
+    this.contacts = contacts;
+  }
 
+  @ManyToMany(mappedBy = "groups")
+  private Set<ContactData> contacts = new HashSet<ContactData>();
+
+  public Set<ContactData> getContacts() {
+    return contacts;
+  }
 
   public int getId() {
     return id;
   }
-
 
   public String getName() {
     return name;
@@ -51,12 +63,10 @@ public class GroupData {
     return this;
   }
 
-
   public GroupData withName(String name) {
     this.name = name;
     return this;
   }
-
 
   public GroupData withHeader(String header) {
     this.header = header;
@@ -98,4 +108,3 @@ public class GroupData {
     return result;
   }
 }
-

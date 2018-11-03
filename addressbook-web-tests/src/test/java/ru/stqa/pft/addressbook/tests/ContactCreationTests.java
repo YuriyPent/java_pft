@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Groups;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,11 +35,14 @@ public class ContactCreationTests extends TestBase{
 
   @Test(enabled = true)
   public void testNewContactCreate() {
-    app.goTo().gotoHomePage();
-    app.getContactHelper().initContactCreation();
+    Groups groups = app.db().groups();
     File photo = new File("src/test/resources/Sinner.jpg");
-    app.getContactHelper().fillContactForm(new ContactData().withFirstname("test_name").withLastname("test_surname").withPhoto(photo),true);
-    app.getContactHelper().submitNewContactCreation();
-    app.getContactHelper().returnToContactList();
+    ContactData newContact = new ContactData().withFirstname("test_name").withLastname("test_surname").withPhoto(photo)
+            .inGroup(groups.iterator().next());
+    app.goTo().gotoHomePage();
+    app.contact().initContactCreation();
+    app.contact().fillContactForm(newContact ,true);
+    app.contact().submitNewContactCreation();
+    app.contact().returnToContactList();
   }
 }
