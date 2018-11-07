@@ -12,7 +12,7 @@ public class ContactAddressTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions() {
     app.goTo().ContactPage();
-    if (app.contact().list().size() == 0) {
+    if (app.db().contacts().size() == 0) {
       app.contact().create(new ContactData().withFirstname("Delete").withLastname("Deletion"));
     }
   }
@@ -20,8 +20,11 @@ public class ContactAddressTests extends TestBase {
   @Test
   public void testContactPhones(){
     ContactData contact = app.contact().all().iterator().next();
+    ContactData email = app.contact().all().iterator().next();
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
+    ContactData emailInfoFromEditForm = app.contact().infoFromEditForm(email);
     assertThat(contact.getAddress(), equalTo(mergeAddress(contactInfoFromEditForm)));
+    assertThat(email.getAddress(), equalTo(mergeEmail(emailInfoFromEditForm)));
   }
 
   private String mergeAddress(ContactData contact) {
@@ -30,9 +33,16 @@ public class ContactAddressTests extends TestBase {
             map(ContactAddressTests::cleaned).
             collect(Collectors.joining(""));
   }
+  private String mergeEmail(ContactData email) {
+    return Arrays.asList(email.getEmail()).
+            stream().
+            map(ContactAddressTests::cleaned).
+            collect(Collectors.joining(""));
+  }
+
 
   public static String cleaned(String phone){
-    return phone.replaceAll("\\s{2}", "") //кажется очишает 2 и более пробела
-            .trim(); //кажется очищает пробелы в начале и конце строки
+    return phone.replaceAll("\\s{2}", "") //очишает 2 и более пробела
+            .trim(); //очищает пробелы в начале и конце строки
   }
 }
