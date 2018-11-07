@@ -16,7 +16,7 @@ public class ContactAddressTests extends TestBase {
       app.contact().create(new ContactData().withFirstname("Delete").withLastname("Deletion"));
     }
   }
-
+//
   @Test
   public void testContactPhones(){
     ContactData contact = app.contact().all().iterator().next();

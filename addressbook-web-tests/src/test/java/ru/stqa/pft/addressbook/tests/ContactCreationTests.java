@@ -2,9 +2,13 @@ package ru.stqa.pft.addressbook.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.thoughtworks.xstream.XStream;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.BufferedReader;
@@ -16,10 +20,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class ContactCreationTests extends TestBase{
 
   @DataProvider
-  public Iterator<Object[]> validGroupsFromJson() throws IOException {
+  public Iterator<Object[]> validContactsFromXml() throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")))) {
+      String xml = "";
+      String line = reader.readLine();
+      while (line != null) {
+        xml += line;
+        line = reader.readLine();
+      }
+      XStream xstream = new XStream();
+      xstream.processAnnotations(ContactData.class);
+      List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);
+      return contacts.stream().map((c) -> new Object[]{c}).collect(Collectors.toList()).iterator();
+    }
+  }
+  @DataProvider
+  public Iterator<Object[]> validContactsFromJson() throws IOException {
     List<Object[]> list = new ArrayList<Object[]>();
     BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")));
     String json = "";
@@ -33,16 +55,47 @@ public class ContactCreationTests extends TestBase{
     return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
-  @Test(enabled = true)
-  public void testNewContactCreate() {
+  @BeforeMethod
+  public void ensurePreconditions() {
+    if (app.db().groups().size() == 0) {
+      app.goTo().groupPage();
+      app.group().create(new GroupData().withName("test1"));
+    }
+  }
+
+  @Test(dataProvider = "validContactsFromJson")
+  public void testNewContactCreate(ContactData newContact) throws Exception{
     Groups groups = app.db().groups();
-    File photo = new File("src/test/resources/Sinner.jpg");
-    ContactData newContact = new ContactData().withFirstname("test_name").withLastname("test_surname").withPhoto(photo)
-            .inGroup(groups.iterator().next());
     app.goTo().gotoHomePage();
-    app.contact().initContactCreation();
-    app.contact().fillContactForm(newContact ,true);
-    app.contact().submitNewContactCreation();
-    app.contact().returnToContactList();
+    Contacts before = app.db().contacts();
+    app.contact().create(newContact.inGroup(groups.iterator().next()));
+    app.goTo().gotoHomePage();
+    assertThat(app.contact().count(), equalTo(before.size() + 1));
+    Contacts after = app.db().contacts();
+    assertThat(after, equalTo(
+            before.withAdded(newContact.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
+  }
+
+  @Test (enabled = false)
+  public void testBadContactCreation() throws Exception {
+    Groups groups = app.db().groups();
+    ContactData newContact  = new ContactData()
+            .withFirstname("Bad'")
+            .withLastname("BadBad")
+            .withAddress("Ohayo")
+            .withHomePhone("8915124488")
+            .withMobilePhone("8914523225")
+            .withWorkPhone("1221")
+            .withEmail("opa@opa.opa")
+            .withEmail2("apa@apa.apa")
+            .withEmail3("Email3@Email3.Email3")
+            .inGroup(groups.iterator().next());
+    app.goTo().ContactPage();
+    Contacts before = app.db().contacts();
+    app.contact().create(newContact);
+    app.goTo().gotoHomePage();
+    assertThat(app.contact().count(), equalTo(before.size()));
+    Contacts after = app.db().contacts();
+    assertThat(after, equalTo(before));
   }
 }

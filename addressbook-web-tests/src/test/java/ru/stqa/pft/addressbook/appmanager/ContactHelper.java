@@ -16,6 +16,8 @@ import static org.testng.Assert.assertTrue;
 
 public class ContactHelper extends HelperBase {
 
+  private Contacts contactCache = null;
+
   public ContactHelper(WebDriver wd) {
     super(wd);
   }
@@ -54,12 +56,13 @@ public class ContactHelper extends HelperBase {
     type(By.name("work"), contactData.getWorkPhone());
     type(By.name("fax"), contactData.getFax());
     type(By.name("email"), contactData.getEmail());
-    // attach(By.name("photo"), contactData.getPhoto());
+    attach(By.name("photo"), contactData.getPhoto());
 
     if (creation) {
       if (contactData.getGroups().size() > 0) {
         Assert.assertTrue(contactData.getGroups().size() == 1);
-        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
+        new Select(wd.findElement(By.name("new_group"))).
+                selectByVisibleText(contactData.getGroups().iterator().next().getName());
       }
     } else {
       Assert.assertFalse(isElementPresent(By.name("new_group")));
@@ -98,9 +101,16 @@ public class ContactHelper extends HelperBase {
 
   public void modify(ContactData contact) {
     editContactById(contact.getId());
+    //fillContactForm(contact, false);
+    updateContact(contact);
+    contactCache = null;
+    returnToContactList();
+    //submitContactModification();
+    //returnToHomePage();
+  }
+  public void updateContact(ContactData contact) {
     fillContactForm(contact, false);
     submitContactModification();
-    returnToHomePage();
   }
 
   public void delete(int index) {
@@ -137,28 +147,28 @@ public class ContactHelper extends HelperBase {
   }
 
   public Contacts all() {
-    Contacts contacts = new Contacts();
-    List<WebElement> elements = wd.findElements(By.name("entry"));
-    for (WebElement element : elements) {  //переменная пробегает по строкам таблицы
-      List<WebElement> trs = element.findElements(By.tagName("td")); //массив из элементов строки
-      List<String> strings = new ArrayList<String>(); //массив для преобразования вебэлемент в стринг
-      for (WebElement e : trs) {
-        strings.add(e.getText()); //метод переводит вебэлемент в стринг
-      }
-      String firstname = strings.get(2);
-      String lastname = strings.get(1);
-      String address = strings.get(3);
-      String allEmail = strings.get(4);
-      String allPhones = strings.get(5);
-      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value")); //присвоение уникального идентификатора
-      contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-              .withAddress(address).withAllEmail(allEmail).withAllPhones(allPhones));
-      /*   String[] phones = strings.get(5).split("\n");
-      ContactData contact = new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-              .withHomephone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]);
-      contacts.add(contact); //присвоение переменной возвращаемому массиву */
+    if (contactCache != null) {
+      return new Contacts(contactCache);
     }
-    return contacts;
+
+    contactCache = new Contacts();
+    List<WebElement> elements = wd.findElements(By.name("entry"));
+    for (WebElement element : elements) {
+      String firstname = element.findElement(By.xpath("./td[3]")).getText();
+      String lastname = element.findElement(By.xpath("./td[2]")).getText();
+      String address = element.findElement(By.xpath("./td[4]")).getText();
+      String allPhones = element.findElement(By.xpath("./td[6]")).getText();
+      String allEmails = element.findElement(By.xpath("./td[5]")).getText();
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+      contactCache.add(new ContactData()
+              .withId(id)
+              .withFirstname(firstname)
+              .withLastname(lastname)
+              .withAddress(address)
+              .withAllPhones(allPhones)
+              .withAllEmails(allEmails));
+    }
+    return new Contacts(contactCache);
   }
 
   public ContactData infoFromEditForm(ContactData contact) {

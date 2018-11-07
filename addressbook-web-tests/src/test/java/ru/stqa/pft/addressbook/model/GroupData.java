@@ -30,7 +30,7 @@ public class GroupData {
   @Column(name = "group_footer")
   @Type(type = "text")
   private String footer;
-  
+
   public void setContacts(Set<ContactData> contacts) {
     this.contacts = contacts;
   }
