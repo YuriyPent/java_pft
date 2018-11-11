@@ -18,8 +18,6 @@ public class HbConnectionTest {
   private SessionFactory sessionFactory;
 
   @BeforeClass
-
-
   protected void setUp() throws Exception {
     // A SessionFactory is set up once for an application!
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -35,7 +33,19 @@ public class HbConnectionTest {
       StandardServiceRegistryBuilder.destroy( registry );
     }
   }
-  @Test
+
+  @Test(priority = 1)
+  public void testHbConnectionGroup() {
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    List<GroupData> result = session.createQuery("from GroupData").list();
+    for (GroupData group : result) {
+      System.out.println(group);
+    }
+    session.getTransaction().commit();
+    session.close();
+  }
+  @Test(priority = 2)
   public void testHbConnection(){
     Session session = sessionFactory.openSession();
     session.beginTransaction();
@@ -46,6 +56,5 @@ public class HbConnectionTest {
     }
     session.getTransaction().commit();
     session.close();
-
   }
 }

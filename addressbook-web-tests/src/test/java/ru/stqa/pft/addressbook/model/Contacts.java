@@ -38,4 +38,14 @@ public class Contacts extends ForwardingSet<ContactData> {
     contacts.remove(contact);
     return contacts;
   }
+
+  public Contacts contactNotGroups() {
+    Contacts notGroup = new Contacts();
+    for (ContactData contact : this) {
+      if (contact.getGroups().size() == 0) {
+        notGroup.add(contact);
+      }
+    }
+    return notGroup;
+  }
 }

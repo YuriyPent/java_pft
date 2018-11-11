@@ -113,14 +113,17 @@ public class ContactHelper extends HelperBase {
     submitContactModification();
   }
 
-  public void delete(int index) {
-    selectContact(index);
-    deleteContact();
+
+  
+  public void selectAllContacts() {
+    wd.findElement(By.cssSelector("input[id='MassCB']")).click();
   }
 
   public void delete(ContactData contact) {
     selectContactById(contact.getId());
     deleteContact();
+    contactCache = null;
+    alertAccept();
   }
 
   public int getContactCount() {
@@ -202,7 +205,8 @@ public class ContactHelper extends HelperBase {
   public void removeFromGroup(ContactData contact, GroupData group) {
     selectGroupFromList("[all]", "group");
     selectGroupFromList(group.getName(), "group");
-    selectContactById(contact.getId());
+    selectAllContacts();
+    //selectContactById(contact.getId());
     click(By.name("remove"));
   }
 

@@ -29,6 +29,9 @@ public class HelperBase {
       }
     }
   }
+  public void alertAccept() {
+    wd.switchTo().alert().accept();
+  }
 
   protected void attach(By locator, File file) {
     if (file != null) {
