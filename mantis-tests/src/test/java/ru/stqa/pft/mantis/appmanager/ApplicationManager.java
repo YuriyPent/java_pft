@@ -1,5 +1,6 @@
 package ru.stqa.pft.mantis.appmanager;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -21,6 +22,10 @@ public class ApplicationManager {
   private FtpHelper ftp;
   private MailHelper mailHelper;
   private JamesHelper jamesHelper;
+  private DbHelper dbHelper;
+  private NavigationHelper navigationHelper;
+  private UserHelper userHelper;
+
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -43,6 +48,10 @@ public class ApplicationManager {
 
   }
 
+  public void logout() {
+    wd.findElement(By.linkText("Logout")).click();
+  }
+
   public String getProperty(String key) {
     return properties.getProperty(key);
   }
@@ -54,8 +63,8 @@ public class ApplicationManager {
     return registrationHelper;
   }
 
-  public FtpHelper ftp(){
-    if (ftp == null){
+  public FtpHelper ftp() {
+    if (ftp == null) {
       ftp = new FtpHelper(this);
     }
     return ftp;
@@ -76,16 +85,40 @@ public class ApplicationManager {
     }
     return wd;
   }
-  public MailHelper mail(){
-    if (mailHelper == null){
+
+  public MailHelper mail() {
+    if (mailHelper == null) {
       mailHelper = new MailHelper(this);
-    }return mailHelper;
+    }
+    return mailHelper;
   }
 
-  public JamesHelper james(){
+  public JamesHelper james() {
     if (jamesHelper == null) {
       jamesHelper = new JamesHelper(this);
     }
     return jamesHelper;
+  }
+
+  public NavigationHelper getNavigationHelper() {
+    if (navigationHelper == null) {
+      navigationHelper = new NavigationHelper(this);
+    }
+    return navigationHelper;
+
+  }
+
+  public UserHelper getUserHelper() {
+    if (userHelper == null) {
+      userHelper = new UserHelper(this);
+    }
+    return userHelper;
+  }
+
+  public DbHelper db() {
+    if (dbHelper == null) {
+      dbHelper = new DbHelper();
+    }
+    return dbHelper;
   }
 }
