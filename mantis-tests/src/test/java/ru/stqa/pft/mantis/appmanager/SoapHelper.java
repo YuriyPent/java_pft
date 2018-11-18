@@ -1,5 +1,5 @@
 package ru.stqa.pft.mantis.appmanager;
-
+//Реализована интеграция тестов с баг-трекером MantisBT
 
 import biz.futureware.mantis.rpc.soap.client.*;
 import ru.stqa.pft.mantis.model.Issue;

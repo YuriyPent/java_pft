@@ -1,4 +1,5 @@
 package ru.stqa.pft.mantis.model;
+//Реализована интеграция тестов с баг-трекером MantisBT
 
 
 public class Issue {

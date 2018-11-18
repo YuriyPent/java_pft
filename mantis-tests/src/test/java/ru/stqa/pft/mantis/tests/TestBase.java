@@ -1,4 +1,5 @@
 package ru.stqa.pft.mantis.tests;
+//Реализована интеграция тестов с баг-трекером MantisBT
 
 import org.hibernate.service.spi.ServiceException;
 import org.openqa.selenium.remote.BrowserType;
