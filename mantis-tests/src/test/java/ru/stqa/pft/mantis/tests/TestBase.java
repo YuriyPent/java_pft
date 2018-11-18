@@ -1,5 +1,4 @@
 package ru.stqa.pft.mantis.tests;
-//Реализована интеграция тестов с баг-трекером MantisBT
 
 import org.hibernate.service.spi.ServiceException;
 import org.openqa.selenium.remote.BrowserType;
@@ -48,7 +47,7 @@ public class TestBase {
       throw new SkipException("Ignored because of issue " + issueId);
     }
   }
-/*
+
   public boolean isBugifyIssueOpen(int issueId) {
     String issueStatus = app.bugify().getIssueByID(issueId);
     if ((issueStatus.equals("Resolved")) || (issueStatus.equals("Closed"))) {
@@ -62,5 +61,4 @@ public class TestBase {
       throw new SkipException("Ignored because of issue " + issueId);
     }
   }
-  */
 }

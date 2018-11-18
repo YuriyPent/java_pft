@@ -3,7 +3,7 @@ apply plugin: 'java'
 repositories {
     mavenCentral()
 }
-
+//Реализовать интеграцию тестов с баг-трекером Bugify
 dependencies {
     compile 'org.testng:testng:6.9.10'
     compile 'com.google.code.gson:gson:2.8.5'

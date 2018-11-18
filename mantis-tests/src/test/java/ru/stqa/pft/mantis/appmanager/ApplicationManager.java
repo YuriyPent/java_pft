@@ -26,6 +26,7 @@ public class ApplicationManager {
   private NavigationHelper navigationHelper;
   private UserHelper userHelper;
   private SoapHelper soapHelper;
+  private BugifyHelper bugifyHelper;
 
 
   public ApplicationManager(String browser) {
@@ -106,7 +107,12 @@ public class ApplicationManager {
       navigationHelper = new NavigationHelper(this);
     }
     return navigationHelper;
-
+  }
+  public BugifyHelper bugify() {
+    if (bugifyHelper == null) {
+      bugifyHelper = new BugifyHelper(this);
+    }
+    return bugifyHelper;
   }
 
   public UserHelper getUserHelper() {
