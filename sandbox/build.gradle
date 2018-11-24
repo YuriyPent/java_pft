@@ -9,3 +9,17 @@ repositories {
 dependencies {
     compile 'org.testng:testng:6.9.10'
 }
+
+test {
+	useTestNG()
+}
+
+task jenkinsTest{
+    inputs.files test.outputs.files
+    doLast{
+        def timestamp = System.currentTimeMillis()
+        test.testResultsDir.eachFile { it.lastModified = timestamp }
+    }
+}
+
+build.dependsOn(jenkinsTest)
